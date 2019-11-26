@@ -1,13 +1,18 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'AWS Device Farm'
+description: 'Run Tests on AWS Device Farm'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  accessKeyId:
+    description: 'AWS accessKeyId'
     required: true
-    default: 'World'
+  secretAccessKeyId:
+    description: 'AWS secretAccessKeyId'
+    required: true
+  region:
+    description: 'AWS region'
+    default: 'us-west-2'
 outputs:
-  time: # id of output
-    description: 'The time we greeted you'
+  projects:
+    description: 'A list of device farm projects'
 runs:
   using: 'node12'
-  main: 'index.js'
+  main: 'src/index.js'
