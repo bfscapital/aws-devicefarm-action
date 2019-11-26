@@ -1,0 +1,24 @@
+{
+  "name": "aws-devicefarm-action",
+  "version": "1.0.0",
+  "description": "A GitHub Action to integrate with AWS Device Farm",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/floatsimple/aws-devicefarm-action.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/floatsimple/aws-devicefarm-action/issues"
+  },
+  "homepage": "https://github.com/floatsimple/aws-devicefarm-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.0",
+    "@actions/github": "^1.1.0"
+  }
+}
