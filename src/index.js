@@ -36,7 +36,7 @@ const run = async () => {
         const deviceFarm = new AWS.DeviceFarm()
 
         const projectResults = await deviceFarm.listProjects().promise()
-        console.log(`projectResults ${projectResults}`)
+        console.log(`projectResults ${JSON.stringify(projectResults)}`)
         const projects = projectResults.data
         const project = projects.find(({ name }) => name === projectName)
         if (!projectName) {
@@ -47,7 +47,7 @@ const run = async () => {
             arn: project.arn
         }
         const devicePoolResults = await deviceFarm.getDevicePool(projectParams).promise()
-        console.log(`devicePoolResults ${devicePoolResults}`)
+        console.log(`devicePoolResults ${JSON.stringify(devicePoolResults)}`)
         const devicePools = devicePoolResults.data
         const devicePool = devicePools.find(({ name }) => name === devicePoolName)
         if (!devicePoolName) {
