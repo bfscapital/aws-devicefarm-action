@@ -3,9 +3,9 @@ const AWS = require('aws-sdk')
 
 const getInputWithDefault = (args) => {
     const { name, defaultValue, required } = args
-    let value = getInput(name)
+    let value = core.getInput(name)
     if (!value && defaultValue) {
-        debug(`Info: No value provided for input ${name}. Defaulting to ${defaultValue}`)
+        core.debug(`Info: No value provided for input ${name}. Defaulting to ${defaultValue}`)
         value = defaultValue
     }
     if (!value && required) {
@@ -20,10 +20,10 @@ const configAWS = () => {
     const region = getInputWithDefault({ name: 'region', defaultValue: 'us-west-2' })
     const apiVersion = '2015-06-23'
 
-    aws.config.accessKeyId = accessKeyId
-    aws.config.secretAccessKey = secretAccessKeyId
-    aws.config.region = region
-    aws.apiVersion = apiVersion
+    AWS.config.accessKeyId = accessKeyId
+    AWS.config.secretAccessKey = secretAccessKeyId
+    AWS.config.region = region
+    AWS.apiVersion = apiVersion
 }
 
 try {
@@ -33,13 +33,13 @@ try {
 
     deviceFarm.listProjects({}, (err, data) => {
         if (err) {
-            debug(err)
+            core.debug(err)
             throw err
         } else {
-            debug(`projects: ${data}`)
-            setOutput('projects', data)
+            core.debug(`projects: ${data}`)
+            core.setOutput('projects', data)
         }
     })
 } catch (error) {
-    setFailed(error.message)
+    core.setFailed(error.message)
 }
