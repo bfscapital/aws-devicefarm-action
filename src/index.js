@@ -43,12 +43,13 @@ const run = async () => {
             throw `Could not find a project with the name ${projectName}`
         }
 
-        const projectParams = {
-            arn: `${project.arn}`
+        const params = {
+            arn: project.arn
         }
-        const devicePoolResults = await deviceFarm.getDevicePool(projectParams).promise()
+        const devicePoolResults = await deviceFarm.listDevicePools(params).promise()
         console.log(`devicePoolResults ${JSON.stringify(devicePoolResults)}`)
-        const devicePool = devicePoolResults.devicePool
+        const devicePools = devicePoolResults.devicePools
+        const devicePool = devicePools.find(({ name }) => name === devicePoolName)
         if (!devicePool) {
             throw `Could not find a device pool with the name ${devicePoolName} in project ${projectName}`
         }
