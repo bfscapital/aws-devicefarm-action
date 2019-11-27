@@ -29,7 +29,7 @@ const configAWS = () => {
 try {
     configAWS()
 
-    const deviceFarm = AWS.DeviceFarm()
+    const deviceFarm = new AWS.DeviceFarm()
 
     deviceFarm.listProjects({}, (err, data) => {
         if (err) {
