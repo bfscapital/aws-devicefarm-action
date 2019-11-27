@@ -44,7 +44,7 @@ const run = async () => {
         }
 
         const projectParams = {
-            arn: project.arn
+            arn: `${project.arn}`
         }
         const devicePoolResults = await deviceFarm.getDevicePool(projectParams).promise()
         console.log(`devicePoolResults ${JSON.stringify(devicePoolResults)}`)
