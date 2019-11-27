@@ -10,9 +10,17 @@ inputs:
   region:
     description: 'AWS region'
     default: 'us-west-2'
+  projectName:
+    description: 'AWS Device Farm project name'
+    required: true
+  devicePoolName:
+    description: 'AWS Device Pool name'
+    required: true
 outputs:
-  projects:
-    description: 'A list of device farm projects'
+  project:
+    description: 'The AWS Device farm project'
+  devicePool:
+    description: 'The AWS Device pool'
 runs:
   using: 'node12'
   main: 'src/index.js'

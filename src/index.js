@@ -26,21 +26,38 @@ const configAWS = () => {
     AWS.apiVersion = apiVersion
 }
 
-try {
-    configAWS()
+const run = async () => {
+    try {
+        configAWS()
 
-    const deviceFarm = new AWS.DeviceFarm()
+        const projectName = getInputWithDefault({ name: 'projectName', required: true })
+        const devicePoolName = getInputWithDefault({ name: 'devicePoolName', required: true })
 
-    deviceFarm.listProjects({}, (err, data) => {
-        if (err) {
-            core.debug(err)
-            throw err
-        } else {
-            const resultsAsString = JSON.stringify(data)
-            core.debug(`projects: ${resultsAsString}`)
-            core.setOutput('projects', resultsAsString)
+        const deviceFarm = new AWS.DeviceFarm()
+
+        const projectResults = await deviceFarm.listProjects().promise()
+        const projects = projectResults.data
+        const project = projects.find(({ name }) => name === projectName)
+        if (!projectName) {
+            throw `Could not find a project with the name ${projectName}`
         }
-    })
-} catch (error) {
-    core.setFailed(error.message)
+
+        const projectParams = {
+            arn: project.arn
+        }
+        const devicePoolResults = await deviceFarm.getDevicePool(projectParams).promise()
+        const devicePools = devicePoolResults.data
+        const devicePool = devicePools.find(({ name }) => name === devicePoolName)
+        if (!devicePoolName) {
+            throw `Could not find a device pool with the name ${devicePoolName} in project ${projectName}`
+        }
+
+        core.setOutput("project", JSON.stringify(project))
+        core.setOutput("devicePool", JSON.stringify(devicePool))
+
+    } catch (error) {
+        core.setFailed(error.message)
+    }
 }
+
+run()
