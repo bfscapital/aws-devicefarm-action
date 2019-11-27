@@ -36,8 +36,9 @@ try {
             core.debug(err)
             throw err
         } else {
-            core.debug(`projects: ${data}`)
-            core.setOutput('projects', data)
+            const resultsAsString = JSON.stringify(data)
+            core.debug(`projects: ${resultsAsString}`)
+            core.setOutput('projects', resultsAsString)
         }
     })
 } catch (error) {
