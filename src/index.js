@@ -36,8 +36,8 @@ try {
             debug(err)
             throw err
         } else {
-            debug(`Projects: ${data}`)
-            setOutput('Projects', data)
+            debug(`projects: ${data}`)
+            setOutput('projects', data)
         }
     })
 } catch (error) {
