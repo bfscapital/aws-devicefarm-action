@@ -37,7 +37,7 @@ const run = async () => {
 
         const projectResults = await deviceFarm.listProjects().promise()
         console.log(`projectResults ${JSON.stringify(projectResults)}`)
-        const projects = projectResults.data
+        const projects = projectResults.projects
         const project = projects.find(({ name }) => name === projectName)
         if (!projectName) {
             throw `Could not find a project with the name ${projectName}`
@@ -48,9 +48,8 @@ const run = async () => {
         }
         const devicePoolResults = await deviceFarm.getDevicePool(projectParams).promise()
         console.log(`devicePoolResults ${JSON.stringify(devicePoolResults)}`)
-        const devicePools = devicePoolResults.data
-        const devicePool = devicePools.find(({ name }) => name === devicePoolName)
-        if (!devicePoolName) {
+        const devicePool = devicePoolResults.devicePool
+        if (!devicePool) {
             throw `Could not find a device pool with the name ${devicePoolName} in project ${projectName}`
         }
 
