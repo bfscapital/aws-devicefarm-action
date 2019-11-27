@@ -1,5 +1,5 @@
-import { getInput, debug, setFailed, setOutput } from '@actions/core'
-import AWS from 'aws-sdk'
+const core = require('@actions/core')
+const AWS = require('aws-sdk')
 
 const getInputWithDefault = (args) => {
     const { name, defaultValue, required } = args
