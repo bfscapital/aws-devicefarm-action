@@ -14,5 +14,5 @@ outputs:
   projects:
     description: 'A list of device farm projects'
 runs:
-  using: 'node12'
+  using: 'node13'
   main: 'src/index.js'
