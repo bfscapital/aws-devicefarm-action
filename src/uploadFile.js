@@ -1,7 +1,7 @@
 const fetch = require('fetch')
 const fs = require('fs')
 
-export default async (filePath, url) => {
+module.exports.uploadFile = async (filePath, url) => {
     return fetch(url, {
         method: 'PUT',
         headers: {
