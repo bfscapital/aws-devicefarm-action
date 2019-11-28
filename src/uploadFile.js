@@ -1,4 +1,4 @@
-require('fetch')
+const fetch = require('node-fetch')
 const fs = require('fs')
 
 uploadFile = async (filePath, url) => {
