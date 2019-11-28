@@ -3,7 +3,7 @@ const fs = require('fs')
 
 uploadFile = async (filePath, url) => {
     return fetch(url, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
             "Content-Type": 'application/octet-stream'
         },
