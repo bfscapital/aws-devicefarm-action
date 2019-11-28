@@ -1,6 +1,7 @@
 const path = require('path')
 const core = require('@actions/core')
 const AWS = require('aws-sdk')
+const uploadFile = require('./uploadFile')
 
 const getInputWithDefault = (args) => {
     const { name, defaultValue, required } = args
@@ -73,10 +74,10 @@ const run = async () => {
             contentType: 'application/octet-stream'
         }
         const appUploadResults = await deviceFarm.createUpload(appUploadParams).promise()
+        const uploadURL = appUploadResults.upload.url
 
-        core.setOutput("project", JSON.stringify(project))
-        core.setOutput("devicePool", JSON.stringify(devicePool))
-        core.setOutput("appUploadResults", JSON.stringify(appUploadResults))
+        const fileUploadResults = await uploadFile(appBinaryPath, uploadURL)
+        console.log(JSON.stringify(fileUploadResults))
 
     } catch (error) {
         core.setFailed(error.message)
