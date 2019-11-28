@@ -16,11 +16,23 @@ inputs:
   devicePoolName:
     description: 'AWS Device Pool name'
     required: true
+  appBinaryPath:
+    description: 'Application binary filesystem path'
+    required: true
+  testPackagePath:
+    description: 'Test scripts package filesystem path'
+    required: true
+  testPackageType:
+    description: 'Test scripts package type. Must be one of _TEST_PACKAGE types defined in https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DeviceFarm.html#createUpload-property'
+    required: true
+
 outputs:
   project:
     description: 'The AWS Device farm project'
   devicePool:
     description: 'The AWS Device pool'
+  appUploadResults:
+    description: 'App upload response'
 runs:
   using: 'node12'
   main: 'src/index.js'
