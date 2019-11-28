@@ -1,4 +1,4 @@
-const request = require('fetch')
+const fetch = require('fetch')
 const fs = require('fs')
 
 export default async (filePath, url) => {
