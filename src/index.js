@@ -29,6 +29,27 @@ const configAWS = () => {
     AWS.apiVersion = apiVersion
 }
 
+const delay = ms => new Promise(res => setTimeout(res, ms))
+
+const waitFor = async (fn, predicate) => {
+    while(fn() !== predicate) {
+        await delay(1000)
+    } 
+}
+
+const uploadAndWait = async (projectArn, type, filePath ) => {
+    const name = path.basename(filePath)
+    const params = {
+        name,
+        projectArn,
+        type,
+    }
+    let { url, arn } = await deviceFarm.createUpload(params).promise().upload
+    await uploadFile(path, url)
+    const fn = () => await deviceFarm.getUpload({ arn }).promise().upload.status
+    await waitFor(fn, 'SUCCEEDED')
+}
+
 const run = async () => {
     try {
         const projectName = getInputWithDefault({ name: 'projectName', required: true })
@@ -38,8 +59,8 @@ const run = async () => {
             throw `${appBinaryPath} file not found`
         }
 
-        // const testPackagePath = getInputWithDefault({ name: 'testPackagePath', required: true })
-        // const testPackageType = getInputWithDefault({ name: 'testPackageType', required: true })
+        const testPackagePath = getInputWithDefault({ name: 'testPackagePath', required: true })
+        const testPackageType = getInputWithDefault({ name: 'testPackageType', required: true })
 
         configAWS()
         const deviceFarm = new AWS.DeviceFarm()
@@ -70,20 +91,9 @@ const run = async () => {
             throw `Invalid appBinaryPath file extension ${appBinaryFileExtension}. Must be ".ipa" or ".apk".`
         }
 
-        const appBinaryName = path.basename(appBinaryPath)
+        uploadAndWait(project.arn, appBinaryType, appBinaryPath)
 
-        const appUploadParams = {
-            name: appBinaryName,
-            projectArn: project.arn,
-            type: appBinaryType,
-            contentType: 'application/octet-stream'
-        }
-        const appUploadResults = await deviceFarm.createUpload(appUploadParams).promise()
-        const uploadURL = appUploadResults.upload.url
-        console.log(`uploadURL: ${uploadURL}`)
-
-        await uploadFile(appBinaryPath, uploadURL)
-        
+        uploadAndWait(project.arn, testPackageType, testPackagePath)
 
     } catch (error) {
         console.log(error.message)
