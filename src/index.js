@@ -44,10 +44,12 @@ const uploadAndWait = async (projectArn, type, filePath ) => {
         projectArn,
         type,
     }
-    let { url, arn } = await deviceFarm.createUpload(params).promise().upload
+    const results = await deviceFarm.createUpload(params).promise().upload
+    let { url, arn } = results
     await uploadFile(path, url)
     const fn = () => await deviceFarm.getUpload({ arn }).promise().upload.status
     await waitFor(fn, 'SUCCEEDED')
+    return results
 }
 
 const run = async () => {
@@ -93,7 +95,18 @@ const run = async () => {
 
         uploadAndWait(project.arn, appBinaryType, appBinaryPath)
 
-        uploadAndWait(project.arn, testPackageType, testPackagePath)
+        const testUploadResults = uploadAndWait(project.arn, testPackageType, testPackagePath)
+
+        const params = {
+            name: 'Test Run',
+            devicePoolArn: devicePool.arn,
+            projectArn: project.arn,
+            test: {
+                type: testPackageType,
+                testPackageArn: testUploadResults.arn
+            }
+        }
+        await deviceFarm.scheduleRun({ params })
 
     } catch (error) {
         console.log(error.message)
