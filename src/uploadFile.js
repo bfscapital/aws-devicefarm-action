@@ -1,4 +1,4 @@
-const fetch = require('fetch')
+require('fetch')
 const fs = require('fs')
 
 uploadFile = async (filePath, url) => {
