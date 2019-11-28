@@ -97,7 +97,7 @@ const run = async () => {
 
         const testUploadResults = uploadAndWait(project.arn, testPackageType, testPackagePath)
 
-        const params = {
+        const scheduleTestRunParams = {
             name: 'Test Run',
             devicePoolArn: devicePool.arn,
             projectArn: project.arn,
@@ -106,7 +106,7 @@ const run = async () => {
                 testPackageArn: testUploadResults.arn
             }
         }
-        await deviceFarm.scheduleRun({ params })
+        await deviceFarm.scheduleRun(scheduleTestRunParams).promise()
 
     } catch (error) {
         console.log(error.message)
