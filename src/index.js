@@ -2,6 +2,7 @@ const path = require('path')
 const core = require('@actions/core')
 const AWS = require('aws-sdk')
 const { uploadFile } = require('./uploadFile')
+const fs = require('fs')
 
 const getInputWithDefault = (args) => {
     const { name, defaultValue, required } = args
@@ -33,6 +34,10 @@ const run = async () => {
         const projectName = getInputWithDefault({ name: 'projectName', required: true })
         const devicePoolName = getInputWithDefault({ name: 'devicePoolName', required: true })
         const appBinaryPath = getInputWithDefault({ name: 'appBinaryPath', required: true })
+        if (!fs.existsSync(appBinaryPath)) {
+            throw `${appBinaryPath} file not found`
+        }
+
         // const testPackagePath = getInputWithDefault({ name: 'testPackagePath', required: true })
         // const testPackageType = getInputWithDefault({ name: 'testPackageType', required: true })
 
@@ -75,11 +80,13 @@ const run = async () => {
         }
         const appUploadResults = await deviceFarm.createUpload(appUploadParams).promise()
         const uploadURL = appUploadResults.upload.url
+        console.log(`uploadURL: ${uploadURL}`)
 
         const fileUploadResults = await uploadFile(appBinaryPath, uploadURL)
         console.log(JSON.stringify(fileUploadResults))
 
     } catch (error) {
+        console.log(error.message)
         core.setFailed(error.message)
     }
 }
