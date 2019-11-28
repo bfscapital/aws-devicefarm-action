@@ -6,7 +6,7 @@ uploadFile = async (filePath, url) => {
     console.log(`File stats: ${JSON.stringify(stats)}`)
     const fileSizeInBytes = stats.size 
     return fetch(url, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
             "Content-Type": 'application/octet-stream',
             "Content-Length": fileSizeInBytes
