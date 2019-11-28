@@ -1,7 +1,7 @@
 const fetch = require('fetch')
 const fs = require('fs')
 
-module.exports.uploadFile = async (filePath, url) => {
+uploadFile = async (filePath, url) => {
     return fetch(url, {
         method: 'PUT',
         headers: {
@@ -10,3 +10,5 @@ module.exports.uploadFile = async (filePath, url) => {
         body: fs.createReadStream(filePath)
     })
 }
+
+module.exports.uploadFile = uploadFile
