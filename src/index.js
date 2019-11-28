@@ -82,7 +82,9 @@ const run = async () => {
         const uploadURL = appUploadResults.upload.url
         console.log(`uploadURL: ${uploadURL}`)
 
-        const fileUploadResults = await uploadFile(appBinaryPath, uploadURL)
+        const fileUploadResults = await uploadFile(appBinaryPath, uploadURL).catch((err) => {
+            console.log(`Err: ${err}`)
+        })
         console.log(JSON.stringify(fileUploadResults))
 
     } catch (error) {
