@@ -27,12 +27,8 @@ inputs:
     required: true
 
 outputs:
-  project:
-    description: 'The AWS Device farm project'
-  devicePool:
-    description: 'The AWS Device pool'
-  appUploadResults:
-    description: 'App upload response'
+  testResults:
+    description: 'Test results'
 runs:
   using: 'node12'
   main: 'src/index.js'
