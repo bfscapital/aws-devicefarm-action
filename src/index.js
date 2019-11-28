@@ -1,7 +1,7 @@
 const path = require('path')
 const core = require('@actions/core')
 const AWS = require('aws-sdk')
-const uploadFile = require('./uploadFile')
+const { uploadFile } = require('./uploadFile')
 
 const getInputWithDefault = (args) => {
     const { name, defaultValue, required } = args
