@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 const fs = require('fs')
 
 uploadFile = async (filePath, url) => {
-    const stats = fs.statSync()
+    const stats = fs.statSync(filePath)
     console.log(`File stats: ${stats}`)
     const fileSizeInBytes = stats.size 
     return fetch(url, {
