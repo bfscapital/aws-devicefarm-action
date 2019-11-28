@@ -11,7 +11,7 @@ uploadFile = async (filePath, url) => {
             "Content-Type": 'application/octet-stream',
             "Content-Length": fileSizeInBytes
         },
-        body: fs.createReadStream(filePath)
+        body: fs.readFileSync(filePath)
     })
 }
 
