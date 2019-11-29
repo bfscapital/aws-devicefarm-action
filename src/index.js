@@ -36,7 +36,10 @@ const initDeviceFarm = () => {
 const delay = ms => new Promise(res => setTimeout(res, ms))
 
 const waitFor = async (fn, predicate) => {
-    while(fn() !== predicate) {
+    let result
+    while(result = fn() !== predicate) {
+        console.log(`pred: ${predicate}`)
+        console.log(`result: ${result}`)
         await delay(1000)
     } 
 }
@@ -58,7 +61,7 @@ const uploadAndWait = async (projectArn, type, filePath ) => {
     const fn = async () => {
         const results = await deviceFarm.getUpload({ arn }).promise()
         const status = results.upload.status
-        console.log(status)
+        console.log(`"${status}"`)
         return status
     }
     await waitFor(fn, 'SUCCEEDED')
