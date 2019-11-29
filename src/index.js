@@ -58,6 +58,7 @@ const uploadAndWait = async (projectArn, type, filePath ) => {
     const fn = async () => {
         const results = await deviceFarm.getUpload({ arn }).promise()
         const status = results.upload.status
+        console.log(status)
         return status
     }
     await waitFor(fn, 'SUCCEEDED')
