@@ -1,8 +1,8 @@
 const path = require('path')
+const fs = require('fs')
 const core = require('@actions/core')
 const AWS = require('aws-sdk')
 const { uploadFile } = require('./uploadFile')
-const fs = require('fs')
 
 let deviceFarm
 
@@ -48,8 +48,9 @@ const uploadAndWait = async (projectArn, type, filePath ) => {
         projectArn,
         type,
     }
-    const results = await deviceFarm.createUpload(params).promise().upload
-    let { url, arn } = results
+    const results = await deviceFarm.createUpload(params).promise()
+    console.log(JSON.stringify(results))
+    let { url, arn } = results.upload
     await uploadFile(path, url)
     const fn = async () => {
         await deviceFarm.getUpload({ arn }).promise().upload.status
