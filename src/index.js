@@ -102,9 +102,9 @@ const run = async () => {
             throw `Invalid appBinaryPath file extension ${appBinaryFileExtension}. Must be ".ipa" or ".apk".`
         }
 
-        uploadAndWait(project.arn, appBinaryType, appBinaryPath)
+        await uploadAndWait(project.arn, appBinaryType, appBinaryPath)
 
-        const testUploadResults = uploadAndWait(project.arn, testPackageType, testPackagePath)
+        const testUploadResults = await uploadAndWait(project.arn, testPackageType, testPackagePath)
 
         const scheduleTestRunParams = {
             name: 'Test Run',
