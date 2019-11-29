@@ -48,8 +48,9 @@ const uploadAndWait = async (projectArn, type, filePath ) => {
         projectArn,
         type,
     }
-    console.log(`Creating upload resource: ${JSON.stringify(params)}`)
+    console.log(`Creating upload resource: ${JSON.stringify(params, null, 2)}`)
     const results = await deviceFarm.createUpload(params).promise().upload
+    console.log(`Upload resource created: ${JSON.stringify(results, null, 2)}`)
     let { url, arn } = results
     console.log(`Uploading file ${path} to ${url}`)
     await uploadFile(path, url)
