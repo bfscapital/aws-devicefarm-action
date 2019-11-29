@@ -4,7 +4,7 @@ const AWS = require('aws-sdk')
 const { uploadFile } = require('./uploadFile')
 const fs = require('fs')
 
-const deviceFarm = initDeviceFarm()
+let deviceFarm
 
 const getInputWithDefault = (args) => {
     const { name, defaultValue, required } = args
@@ -51,13 +51,17 @@ const uploadAndWait = async (projectArn, type, filePath ) => {
     const results = await deviceFarm.createUpload(params).promise().upload
     let { url, arn } = results
     await uploadFile(path, url)
-    const fn = () => await deviceFarm.getUpload({ arn }).promise().upload.status
+    const fn = async () => {
+        await deviceFarm.getUpload({ arn }).promise().upload.status
+    }
     await waitFor(fn, 'SUCCEEDED')
     return results
 }
 
 const run = async () => {
     try {
+        deviceFarm = initDeviceFarm()
+
         const projectName = getInputWithDefault({ name: 'projectName', required: true })
         const devicePoolName = getInputWithDefault({ name: 'devicePoolName', required: true })
         const appBinaryPath = getInputWithDefault({ name: 'appBinaryPath', required: true })
