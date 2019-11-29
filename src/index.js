@@ -114,7 +114,7 @@ const run = async () => {
             devicePoolArn: devicePool.arn,
             projectArn: project.arn,
             test: {
-                type: testPackageType,
+                type: testPackageType.replace('_TEST_PACKAGE',''),
                 testPackageArn: testUploadResults.arn
             }
         }
