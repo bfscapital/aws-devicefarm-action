@@ -37,7 +37,7 @@ const delay = ms => new Promise(res => setTimeout(res, ms))
 
 const waitFor = async (fn, predicate) => {
     let result
-    while(result = fn() !== predicate) {
+    while(result = await fn() !== predicate) {
         console.log(`pred: ${predicate}`)
         console.log(`result: ${result}`)
         await delay(1000)
