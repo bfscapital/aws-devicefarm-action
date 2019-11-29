@@ -118,7 +118,7 @@ const run = async () => {
                 testPackageArn: testUploadResults.arn
             }
         }
-        console.log(`Scheduling test run with params: ${scheduleTestRunParams}`)
+        console.log(`Scheduling test run with params: ${JSON.stringify(scheduleTestRunParams, null, 2)}`)
         const scheduleRunResults = await deviceFarm.scheduleRun(scheduleTestRunParams).promise()
         console.log(`Schedule test run results: ${JSON.stringify(scheduleRunResults, null, 2)}`)
 
