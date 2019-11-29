@@ -52,8 +52,8 @@ const uploadAndWait = async (projectArn, type, filePath ) => {
     const results = await deviceFarm.createUpload(params).promise()
     console.log(`Upload resource created: ${JSON.stringify(results, null, 2)}`)
     let { url, arn } = results.upload
-    console.log(`Uploading file ${path} to ${url}`)
-    await uploadFile(path, url)
+    console.log(`Uploading file ${filePath} to ${url}`)
+    await uploadFile(filePath, url)
     console.log(`Checking upload status...`)
     const fn = async () => {
         const results = await deviceFarm.getUpload({ arn }).promise()
