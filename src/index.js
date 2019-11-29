@@ -115,7 +115,7 @@ const run = async () => {
             projectArn: project.arn,
             test: {
                 type: testPackageType.replace('_TEST_PACKAGE',''),
-                testPackageArn: testUploadResults.arn
+                testPackageArn: testUploadResults.upload.arn
             }
         }
         console.log(`Scheduling test run with params: ${JSON.stringify(scheduleTestRunParams, null, 2)}`)
