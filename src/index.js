@@ -4,6 +4,8 @@ const AWS = require('aws-sdk')
 const { uploadFile } = require('./uploadFile')
 const fs = require('fs')
 
+const deviceFarm = initDeviceFarm()
+
 const getInputWithDefault = (args) => {
     const { name, defaultValue, required } = args
     let value = core.getInput(name)
@@ -17,7 +19,7 @@ const getInputWithDefault = (args) => {
     return value
 }
 
-const configAWS = () => {
+const initDeviceFarm = () => {
     const accessKeyId = getInputWithDefault({ name: 'accessKeyId', required: true })
     const secretAccessKeyId = getInputWithDefault({ name: 'secretAccessKeyId', required: true })
     const region = getInputWithDefault({ name: 'region', defaultValue: 'us-west-2' })
@@ -27,6 +29,8 @@ const configAWS = () => {
     AWS.config.secretAccessKey = secretAccessKeyId
     AWS.config.region = region
     AWS.apiVersion = apiVersion
+
+    return new AWS.DeviceFarm()
 }
 
 const delay = ms => new Promise(res => setTimeout(res, ms))
@@ -60,12 +64,8 @@ const run = async () => {
         if (!fs.existsSync(appBinaryPath)) {
             throw `${appBinaryPath} file not found`
         }
-
         const testPackagePath = getInputWithDefault({ name: 'testPackagePath', required: true })
         const testPackageType = getInputWithDefault({ name: 'testPackageType', required: true })
-
-        configAWS()
-        const deviceFarm = new AWS.DeviceFarm()
 
         const projectResults = await deviceFarm.listProjects().promise()
         const projects = projectResults.projects
