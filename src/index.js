@@ -105,7 +105,7 @@ const run = async () => {
             throw `Invalid appBinaryPath file extension ${appBinaryFileExtension}. Must be ".ipa" or ".apk".`
         }
 
-        await uploadAndWait(project.arn, appBinaryType, appBinaryPath)
+        const appUploadResults = await uploadAndWait(project.arn, appBinaryType, appBinaryPath)
 
         const testUploadResults = await uploadAndWait(project.arn, testPackageType, testPackagePath)
 
@@ -113,6 +113,7 @@ const run = async () => {
             name: 'Test Run',
             devicePoolArn: devicePool.arn,
             projectArn: project.arn,
+            appArn: appUploadResults.upload.arn,
             test: {
                 type: testPackageType.replace('_TEST_PACKAGE',''),
                 testPackageArn: testUploadResults.upload.arn
