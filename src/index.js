@@ -35,9 +35,9 @@ const initDeviceFarm = () => {
 
 const delay = ms => new Promise(res => setTimeout(res, ms))
 
-const waitFor = async (fn, predicate) => {
+const waitFor = async (fn, predicate, pollingInterval = 1000) => {
     while(await fn() !== predicate) {
-        await delay(1000)
+        await delay(pollingInterval)
     } 
 }
 
@@ -131,6 +131,16 @@ const run = async () => {
         console.log(`Scheduling test run with params: ${JSON.stringify(scheduleTestRunParams, null, 2)}`)
         const scheduleRunResults = await deviceFarm.scheduleRun(scheduleTestRunParams).promise()
         console.log(`Schedule test run results: ${JSON.stringify(scheduleRunResults, null, 2)}`)
+        
+        const runParams = {
+            arm: scheduleRunResults.run.arn
+        }
+        const checker = async () => {
+            const results = await deviceFarm.getRun(runParams).promise()
+            console.log(`Run info: ${JSON.stringify(results, null, 2)}`)
+            return results.run.status
+        }
+        await waitFor(checker, 'COMPLETED', 5000)
 
     } catch (error) {
         console.log(error.message)
