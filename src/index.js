@@ -133,7 +133,7 @@ const run = async () => {
         console.log(`Schedule test run results: ${JSON.stringify(scheduleRunResults, null, 2)}`)
         
         const runParams = {
-            arm: scheduleRunResults.run.arn
+            arn: scheduleRunResults.run.arn
         }
         const checker = async () => {
             const results = await deviceFarm.getRun(runParams).promise()
