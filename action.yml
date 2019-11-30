@@ -25,6 +25,10 @@ inputs:
   testPackageType:
     description: 'Test scripts package type. Must be one of _TEST_PACKAGE types defined in https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DeviceFarm.html#createUpload-property'
     required: true
+  testSpecPath:
+    description: 'Test environment spec filesystem path'
+    required: true
+  
 
 outputs:
   testResults:

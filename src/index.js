@@ -78,6 +78,11 @@ const run = async () => {
         }
         const testPackagePath = getInputWithDefault({ name: 'testPackagePath', required: true })
         const testPackageType = getInputWithDefault({ name: 'testPackageType', required: true })
+        const testType = testPackageType.replace('_TEST_PACKAGE','')
+        const testSpecPath = getInputWithDefault({ name: 'testSpecPath', required: true })
+        if (!fs.existsSync(testSpecPath)) {
+            throw `${testSpecPath} file not found`
+        }
 
         const projectResults = await deviceFarm.listProjects().promise()
         const projects = projectResults.projects
@@ -109,14 +114,18 @@ const run = async () => {
 
         const testUploadResults = await uploadAndWait(project.arn, testPackageType, testPackagePath)
 
+        const testSpecType = `${testType}_TEST_SPEC`
+        const testSpecUploadResults = await uploadAndWait(project.arn, testSpecType, testSpecPath)
+
         const scheduleTestRunParams = {
             name: 'Test Run',
             devicePoolArn: devicePool.arn,
             projectArn: project.arn,
             appArn: appUploadResults.upload.arn,
             test: {
-                type: testPackageType.replace('_TEST_PACKAGE',''),
-                testPackageArn: testUploadResults.upload.arn
+                type: testType,
+                testPackageArn: testUploadResults.upload.arn,
+                testSpecArn: testSpecUploadResults.upload.arn
             }
         }
         console.log(`Scheduling test run with params: ${JSON.stringify(scheduleTestRunParams, null, 2)}`)
