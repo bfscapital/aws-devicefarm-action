@@ -147,7 +147,7 @@ const run = async () => {
             case 'FAILED':
             case 'ERRORED':
             case 'STOPPED':
-                core.setFailed(`Test run failed with error: ${finalRunResults.run.result}`)
+                core.setFailed(`Test run failed with error: ${testRunResults.run.result}`)
         }
         core.setOutput('testRunResults', testRunResults)
         
