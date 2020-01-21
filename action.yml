@@ -31,8 +31,10 @@ inputs:
   
 
 outputs:
-  testResults:
-    description: 'Test results'
+  testRunResults:
+    description: 'Test run results JSON output. See https://docs.aws.amazon.com/devicefarm/latest/APIReference/API_GetRun.html'
+  testRunConsoleUrl:
+    description: 'AWS Device Farm console test run results URL'
 runs:
   using: 'node12'
   main: 'src/index.js'

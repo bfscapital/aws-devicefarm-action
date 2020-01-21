@@ -135,12 +135,30 @@ const run = async () => {
         const runParams = {
             arn: scheduleRunResults.run.arn
         }
+        let testRunResults
         const checker = async () => {
-            const results = await deviceFarm.getRun(runParams).promise()
-            console.log(`Run info: ${JSON.stringify(results, null, 2)}`)
-            return results.run.status
+            testRunResults = await deviceFarm.getRun(runParams).promise()
+            console.log(`Run info: ${JSON.stringify(testRunResults, null, 2)}`)
+            return testRunResults.run.status
         }
         await waitFor(checker, 'COMPLETED', 5000)
+
+        switch (testRunResults.run.result) {
+            case 'FAILED':
+            case 'ERRORED':
+            case 'STOPPED':
+                core.setFailed(`Test run failed with error: ${finalRunResults.run.result}`)
+        }
+        core.setOutput('testRunResults', testRunResults)
+        
+        const region = AWS.config.region
+        const projectId = project.urn.match(/project:(.*)/)[1]
+        const runId = scheduleRunResults.run.arn.match(/run:(.*)/)[1]
+        const testRunConsoleUrl = `https://${region}.console.aws.amazon.com/
+        devicefarm/home?#/projects/
+        ${projectId}/runs/
+        ${runId}`
+        core.setOutput('testRunConsoleUrl', testRunConsoleUrl)
 
     } catch (error) {
         console.log(error.message)
