@@ -152,7 +152,7 @@ const run = async () => {
         core.setOutput('testRunResults', testRunResults)
         
         const region = AWS.config.region
-        const projectId = project.urn.match(/project:(.*)/)[1]
+        const projectId = project.arn.match(/project:(.*)/)[1]
         const runId = scheduleRunResults.run.arn.match(/run:(.*)/)[1]
         const testRunConsoleUrl = `https://${region}.console.aws.amazon.com/
         devicefarm/home?#/projects/
