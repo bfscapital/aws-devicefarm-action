@@ -143,14 +143,9 @@ const run = async () => {
         }
         await waitFor(checker, 'COMPLETED', 5000)
 
-        switch (testRunResults.run.result) {
-            case 'FAILED':
-            case 'ERRORED':
-            case 'STOPPED':
-                core.setFailed(`Test run failed with error: ${testRunResults.run.result}`)
-        }
         core.setOutput('testRunResults', testRunResults)
-        
+        console.log(`testRunResults ${JSON.stringify(testRunResults)}`)
+
         const region = AWS.config.region
         const projectId = project.arn.match(/project:(.*)/)[1]
         const runId = testRunResults.run.arn.match(/run:(.*)/)[1]
@@ -158,7 +153,15 @@ const run = async () => {
         devicefarm/home?#/projects/
         ${projectId}/runs/
         ${runId}`
+        console.log(`testRunConsoleUrl ${testRunConsoleUrl}`)
         core.setOutput('testRunConsoleUrl', testRunConsoleUrl)
+
+        switch (testRunResults.run.result) {
+            case 'FAILED':
+            case 'ERRORED':
+            case 'STOPPED':
+                core.setFailed(`Test run failed with error: ${testRunResults.run.result}`)
+        }
 
     } catch (error) {
         console.log(error.message)
