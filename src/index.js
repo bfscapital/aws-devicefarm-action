@@ -143,16 +143,13 @@ const run = async () => {
         }
         await waitFor(checker, 'COMPLETED', 5000)
 
-        core.setOutput('testRunResults', testRunResults)
-        console.log(`testRunResults ${JSON.stringify(testRunResults)}`)
+        core.setOutput('testRunResults', JSON.stringify(testRunResults, null, 2))
+        console.log(`testRunResults ${JSON.stringify(testRunResults, null, 2)}`)
 
         const region = AWS.config.region
         const projectId = project.arn.match(/project:(.*)/)[1]
         const runId = testRunResults.run.arn.match(/run:(.*)/)[1]
-        const testRunConsoleUrl = `https://${region}.console.aws.amazon.com/
-        devicefarm/home?#/projects/
-        ${projectId}/runs/
-        ${runId}`
+        const testRunConsoleUrl = `https://${region}.console.aws.amazon.com/devicefarm/home?#/projects/${projectId}/runs/${runId}`
         console.log(`testRunConsoleUrl ${testRunConsoleUrl}`)
         core.setOutput('testRunConsoleUrl', testRunConsoleUrl)
 
