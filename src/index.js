@@ -148,7 +148,9 @@ const run = async () => {
 
         const region = AWS.config.region
         const projectId = project.arn.match(/project:(.*)/)[1]
-        const runId = testRunResults.run.arn.match(/run:(.*)/)[1]
+        const runArn = testRunResults.run.arn
+        const lastSlash = runArn.lastIndexOf('/')
+        const runId = runArn.substring(lastSlash + 1)
         const testRunConsoleUrl = `https://${region}.console.aws.amazon.com/devicefarm/home?#/projects/${projectId}/runs/${runId}`
         console.log(`testRunConsoleUrl ${testRunConsoleUrl}`)
         core.setOutput('testRunConsoleUrl', testRunConsoleUrl)
