@@ -20,7 +20,7 @@
   "dependencies": {
     "@actions/core": "^1.2.6",
     "@actions/github": "^1.1.0",
-    "aws-sdk": "^2.580.0",
+    "aws-sdk": "^2.1354.0",
     "node-fetch": "^2.6.1"
   }
 }
